@@ -1,0 +1,54 @@
+<!--<body class="bg-gray-100 flex justify-center items-center">-->
+
+<!--<div class="container p-5 h-screen">-->
+<!--  <h1 class="text-5xl mb-4">Règlements</h1>-->
+
+<!--  <div class="overflow-auto rounded-lg shadow hidden md:block">-->
+<!--    <table class="w-full">-->
+<!--      <thead class="bg-blue-500 text-white border-b-2 border-gray-200">-->
+<!--      <tr>-->
+<!--        <th class="w-20 p-3 text-sm font-semibold tracking-wide text-left">Select</th>-->
+<!--        <th class="w-20 p-3 text-sm font-semibold tracking-wide text-left">Article</th>-->
+<!--        <th class="w-24 p-3 text-sm font-semibold tracking-wide text-left">Status</th>-->
+<!--        <th class="w-24 p-3 text-sm font-semibold tracking-wide text-left">Date</th>-->
+<!--        <th class="w-32 p-3 text-sm font-semibold tracking-wide text-left">Description</th>-->
+<!--        <th class="w-40 p-3 text-sm font-semibold tracking-wide text-left">Paid Factures</th>-->
+<!--      </tr>-->
+<!--      </thead>-->
+<!--      <tbody class="divide-y divide-gray-100">-->
+
+<!--      <tr class="bg-gray-50" *ngFor="let reglement of reglements">-->
+<!--        <td class="p-3 text-sm text-gray-700 whitespace-nowrap">-->
+<!--          <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-500" [(ngModel)]="reglement.isSelected"-->
+<!--                 (change)="updateSubmitButtonState()">-->
+<!--        </td>-->
+<!--        <td class="p-3 text-sm text-gray-700 whitespace-nowrap">-->
+<!--          <a href="#" class="font-bold text-blue-500 hover:underline">{{reglement.article}}</a>-->
+<!--        </td>-->
+
+<!--        <td class="p-3 text-sm text-gray-700 whitespace-nowrap">-->
+<!--              <span-->
+<!--                class="p-1.5 text-xs font-medium uppercase tracking-wider {{reglement.status == 'EN_VIGUEUR' ? 'text-green-800 bg-green-200' : 'text-gray-800 bg-gray-200' }} rounded-lg bg-opacity-50">-->
+<!--                {{reglement.status == 'EN_VIGUEUR' ? 'En vigueur' : 'Inactif'}} </span>-->
+<!--        </td>-->
+<!--        <td class="p-3 text-sm text-gray-700 whitespace-nowrap">{{reglement.date}}</td>-->
+<!--        <td class="p-3 text-sm text-gray-700 whitespace-nowrap">{{reglement.description}}</td>-->
+<!--        <td class="p-3 text-sm text-gray-700 whitespace-nowrap">-->
+<!--          <select class="border border-gray-300 p-2 rounded">-->
+<!--            <option value="">Select Facture</option>-->
+<!--            <option value="facture1">Facture 1</option>-->
+<!--            <option value="facture2">Facture 2</option>-->
+<!--            <option value="facture3">Facture 3</option>-->
+<!--          </select>-->
+<!--        </td>-->
+<!--      </tr>-->
+
+<!--      </tbody>-->
+<!--    </table>-->
+<!--  </div>-->
+<!--  <button class="bg-blue-500 text-white mt-4 py-2 px-4 rounded disabled:opacity-50">-->
+<!--    Soumettre-->
+<!--  </button>-->
+<!--</div>-->
+
+<!--</body>-->
