@@ -2,7 +2,6 @@ package com.springboot.reglement.Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import org.hibernate.annotations.Generated;
 
 import java.time.LocalDate;
 
@@ -10,8 +9,9 @@ import java.time.LocalDate;
 public class Facture {
 
     public enum Etat {
-        PAYEE,
+
         NON_PAYEE,
+        PAYEE
     }
 
     @Id

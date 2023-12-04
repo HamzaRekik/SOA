@@ -1,8 +1,5 @@
 package com.springboot.reglement.Entities;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -12,14 +9,14 @@ import java.util.List;
 public class Reglement {
 
     public enum Etat {
-        REGLE,
-        NON_REGLE,
+
+        NON_REGLE, REGLE,
     }
 
 
     @Id
-    @GeneratedValue
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
 
     private String num_reglement;
 

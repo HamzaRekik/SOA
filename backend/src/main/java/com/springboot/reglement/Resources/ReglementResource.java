@@ -5,9 +5,11 @@ import com.springboot.reglement.Entities.Facture;
 import com.springboot.reglement.Entities.Reglement;
 import com.springboot.reglement.Repositories.FactureRepository;
 import com.springboot.reglement.Repositories.ReglementRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.SecureRandom;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,18 +26,42 @@ public class ReglementResource {
     }
 
     @GetMapping("/reglements")
-    public List<Reglement> getAllReglements(){
+    public List<Reglement> getAllReglements() {
         return reglementRepository.findAll();
     }
 
-    @GetMapping("/reglment/{id}")
-    public Optional<Reglement> getReglementById(@PathVariable long id){
+    @GetMapping("/reglement/{id}")
+    public Optional<Reglement> getReglementById(@PathVariable long id) {
         return reglementRepository.findById(id);
     }
 
     @GetMapping("/factures")
-    public List<Facture> getAllFactures(){
-        return factureRepository.findAll();
+    public List<Facture> getAllFactures() {
+        Sort sort = Sort.by(Sort.Direction.ASC, "etat");
+        return factureRepository.findAll(sort);
+    }
+
+
+    public Reglement createReglement() {
+        Reglement reglement = new Reglement();
+        reglement.setNum_reglement(generateRandomString());
+        reglement.setEtat(Reglement.Etat.REGLE);
+        reglement.setDate_paiement(LocalDate.now());
+        return reglementRepository.save(reglement);
+    }
+
+    @PostMapping ("/set_factures")
+    public void setFactures(@RequestBody List<Facture> factures){
+        long somme = 0L;
+        Reglement reglement = createReglement();
+        for(Facture facture : factures){
+            facture.setEtat(Facture.Etat.PAYEE);
+            facture.setReglement(reglement);
+            somme += facture.getMontant_total();
+            factureRepository.save(facture);
+        }
+        reglement.setMontant(somme);
+        reglementRepository.save(reglement);
     }
 
 

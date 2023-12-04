@@ -15,28 +15,23 @@
       </tr>
       </thead>
       <tbody class="divide-y divide-gray-100">
-
       <tr class="bg-gray-50" *ngFor="let facture of factures">
         <td class="p-3 text-sm text-gray-700 whitespace-nowrap">
-          <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-500" [(ngModel)]="facture.isSelected"
+          <input *ngIf="facture.etat == 'NON_PAYEE'" type="checkbox" class="form-checkbox h-4 w-4 text-blue-500"
+                 [(ngModel)]="facture.isSelected"
                  (change)="updateSubmitButtonState()">
         </td>
         <td class="p-3 text-sm text-gray-700 whitespace-nowrap">
           <a href="#" class="font-bold text-blue-500 hover:underline">{{facture.num_facture}}</a>
         </td>
-
         <td class="p-3 text-sm text-gray-700 whitespace-nowrap">
           <span
             class="p-1.5 text-xs font-medium uppercase tracking-wider {{facture.etat == 'NON_PAYEE' ? 'text-red-800 bg-red-200' : 'text-green-800 bg-green-200' }} rounded-lg bg-opacity-50">
   {{facture.etat == 'NON_PAYEE' ? 'Non Payé' : 'Payé'}} </span>
-
-
         </td>
         <td class="p-3 text-sm text-gray-700 whitespace-nowrap">{{facture.date_transaction}}</td>
         <td class="p-3 text-sm text-gray-700 whitespace-nowrap">${{facture.montant_total}}</td>
       </tr>
-
-
       </tbody>
     </table>
   </div>

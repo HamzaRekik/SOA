@@ -11,7 +11,7 @@ export class FacturesComponent implements OnInit {
 
   isSubmitButtonEnabled = false;
   factures: Facture[] = [];
-  somme = 0;
+  factToRegl: Facture[] = [];
 
   constructor(private service: FacturesService) {
   }
@@ -19,15 +19,27 @@ export class FacturesComponent implements OnInit {
   calculSomme(){
     for (let i = 0; i < this.factures.length; i++) {
       if (this.factures[i].isSelected)
-      this.somme += this.factures[i].montant_total!;
+        this.factToRegl.push(this.factures[i])
     }
-    alert(this.somme)
-    this.somme=0
+    console.log(this.factToRegl)
+    this.saveReglement()
+    this.factToRegl = []
   }
   updateSubmitButtonState() {
     this.isSubmitButtonEnabled = this.factures.some(facture => facture.isSelected);
   }
 
+  saveReglement(): void {
+    this.service.makeReglement(this.factToRegl).subscribe({
+      next: (value: Array<Facture>) => {
+        this.updateSubmitButtonState();
+        this.ngOnInit();
+      },
+      error: (error) => {
+        console.error("Error making reglement:", error);
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.service.getAllFactures().subscribe({
