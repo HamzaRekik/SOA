@@ -41,13 +41,33 @@ export class FacturesComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
+  paidFactures(){
+    this.service.getPaidFactures().subscribe({
+      next: value =>{
+        this.factures = value
+      }
+    })
+  }
+
+  unpaidFactures(){
+    this.service.getUnpaidFactures().subscribe({
+      next: value =>{
+        this.factures = value
+      }
+    })
+  }
+
+  allFactures(){
     this.service.getAllFactures().subscribe({
       next: value => {
         this.factures = value
-
       }
     })
+  }
+
+
+  ngOnInit(): void {
+    this.allFactures()
   }
 
 }

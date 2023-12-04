@@ -1,6 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {FacturesService} from "./services/factures.service";
-
 
 @Component({
   selector: 'app-root',
