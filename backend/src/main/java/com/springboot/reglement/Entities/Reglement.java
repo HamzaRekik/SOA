@@ -10,7 +10,7 @@ public class Reglement {
 
     public enum Etat {
 
-        NON_REGLE, REGLE,
+        NON_REGLE, Complete,
     }
 
 
@@ -26,7 +26,7 @@ public class Reglement {
 
     private LocalDate date_paiement;
 
-    @OneToMany(mappedBy = "reglement")
+    @OneToMany(mappedBy = "reglement", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Facture> factures;
 
 

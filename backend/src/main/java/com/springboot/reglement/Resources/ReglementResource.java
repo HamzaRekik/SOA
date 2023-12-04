@@ -41,11 +41,20 @@ public class ReglementResource {
         return factureRepository.findAll(sort);
     }
 
+    @GetMapping("/non_paye")
+    public List<Facture> getFacturesNonPaye() {
+        return factureRepository.findByEtat(Facture.Etat.NON_PAYEE);
+    }
+
+    @GetMapping("/paye")
+    public List<Facture> getFacturesPaye() {
+        return factureRepository.findByEtat(Facture.Etat.PAYEE);
+    }
 
     public Reglement createReglement() {
         Reglement reglement = new Reglement();
         reglement.setNum_reglement(generateRandomString());
-        reglement.setEtat(Reglement.Etat.REGLE);
+        reglement.setEtat(Reglement.Etat.Complete);
         reglement.setDate_paiement(LocalDate.now());
         return reglementRepository.save(reglement);
     }
