@@ -4,5 +4,5 @@ export interface Facture{
    montant_total?: number,
   etat? : string,
   date_transaction? : string,
-  isSelected? : boolean
+  isSelected : boolean
 }

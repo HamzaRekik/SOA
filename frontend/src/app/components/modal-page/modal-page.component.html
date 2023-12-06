@@ -1,0 +1,103 @@
+<!-- modal.component.html -->
+<div class="fixed z-10 inset-0 overflow-y-auto">
+  <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+    <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+      <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+    </div>
+
+    <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+    <div
+      class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+      <div class=" bg-gray-700 px-4 py-5 sm:px-6  items-center">
+        <h3 class="text-lg leading-6 font-medium text-white">Demande de paiement</h3>
+      </div>
+      <button class="absolute top-0 right-0 mt-4 mr-4 text-white" (click)="onClose()">
+        <fa-icon [icon]="faClose"></fa-icon> <!-- Font Awesome close icon -->
+      </button>
+      <div class="bg-white pt-4 pb-4 sm:px-6">
+        <label for="currentDate" class="block text-sm font-medium text-gray-700">Current Date:</label>
+        <input type="text" id="currentDate" class="mt-1 p-2 w-full border rounded-md" [(ngModel)]="currentDate"
+               disabled>
+
+        <div class="flex items-center mt-4 space-x-4 pb-4">
+          <label class="mr-2 text-sm font-medium text-gray-700">Payment method:</label>
+          <div class="flex flex-row space-x-4">
+            <label for="creditCard" class="flex items-center">
+              <input
+                type="radio"
+                id="creditCard"
+                name="paymentMethod"
+                value="creditCard"
+                [(ngModel)]="paymentMethod"
+                class="w-4 h-4 rounded border-gray-300 focus:ring-blue-500 "
+              />
+              <img
+                src="https://e7.pngegg.com/pngimages/996/264/png-clipart-credit-card-visa-logo-mastercard-credit-card-blue-text.png"
+                alt="Carte Bancaire"
+                class="ml-2 h-4"
+              />
+              <span class="ml-2 text-sm text-gray-700">Carte Bancaire</span>
+            </label>
+            <label for="paypal" class="flex items-center">
+              <input
+                type="radio"
+                id="paypal"
+                name="paymentMethod"
+                value="paypal"
+                [(ngModel)]="paymentMethod"
+                class="w-4 h-4 rounded border-gray-300 focus:ring-blue-500"
+              />
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/2331/2331941.png"
+                class="ml-2 h-4"
+                height="40"
+                width="20 "
+              />
+              <span class="ml-2 text-sm text-gray-700">En Espece</span>
+            </label>
+          </div>
+        </div>
+
+        <label *ngIf="factures.length !== 0" for="currentDate" class="block text-sm font-medium text-gray-700 pb-2">Factures non payé:</label>
+
+        <div *ngIf="factures.length !==0" class="flex flex-col bg-gray-100 rounded-lg p-4">
+
+          <div *ngFor="let facture of factures"  class="flex flex-row justify-between border-b p-2" >
+            <span class="text-gray-700">{{facture.num_facture}}</span>
+            <span class="text-gray-700">{{facture.date_transaction}}</span>
+            <span class="text-gray-700">${{facture.montant_total}}</span>
+            <button class="text-sm text-gray-500 hover:text-gray-700 font-bold" (click)="addToPay(facture)"><fa-icon [icon]="faPlus"></fa-icon></button>
+          </div>
+        </div>
+        <label *ngIf="facturesToPay.length !== 0" for="currentDate" class="block text-sm font-medium text-gray-700 pb-2">Factures a payé:</label>
+
+        <div *ngIf="facturesToPay.length !== 0" class="flex flex-col bg-gray-100 rounded-lg p-4">
+
+          <div class="flex flex-col space-y-2">
+            <div *ngFor="let facture of facturesToPay" class="flex flex-row justify-between items-center border-b p-2">
+              <span class="text-gray-700">{{facture.num_facture}}</span>
+              <span class="text-gray-700">{{facture.date_transaction}}</span>
+              <span class="text-gray-700">${{facture.montant_total}}</span>
+              <button class="text-bold text-gray-500 hover:text-gray-700 font-bold" (click)="removeFromPay(facture)"><fa-icon [icon]="faDetail"></fa-icon></button>
+              <button class="text-bold text-gray-500 hover:text-gray-700 font-bold" (click)="removeFromPay(facture)"><fa-icon [icon]="faMinus"></fa-icon></button>
+            </div>
+            <div class="flex flex-row justify-between items-center border-b p-2">
+              <span class="text-gray-700 font-bold">Total</span>
+              <span class="text-gray-700 font-bold">${{montantTotal}}</span>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+      <div class="bg-white px-4 py-4 sm:px-6">
+        <button type="button"
+                class="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-gray-700 text-base font-medium text-white sm:text-sm"
+                (click)="onClose()">
+          Terminer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

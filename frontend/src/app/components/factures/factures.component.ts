@@ -64,6 +64,19 @@ export class FacturesComponent implements OnInit {
       }
     })
   }
+  showModal = false;
+  modalTitle = 'Sample Modal';
+  modalContent = 'This is a sample modal content.';
+
+  openModal() {
+    this.showModal = true;
+  }
+
+  closeModal() {
+    this.showModal = false;
+    // Do something when modal is closed
+    console.log('Modal closed');
+  }
 
 
   ngOnInit(): void {

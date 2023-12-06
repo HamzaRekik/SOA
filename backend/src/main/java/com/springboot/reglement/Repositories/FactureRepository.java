@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface FactureRepository extends JpaRepository<Facture,Long> {
-
-
     List<Facture> findByEtat(Facture.Etat etat);
+    long countByEtat(Facture.Etat etat);
 }

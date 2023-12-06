@@ -46,6 +46,11 @@ public class ReglementResource {
         return factureRepository.findByEtat(Facture.Etat.NON_PAYEE);
     }
 
+    @GetMapping("/count_facture_non_paye")
+    public long countFacturesNonPaye() {
+        return factureRepository.countByEtat(Facture.Etat.NON_PAYEE);
+    }
+
     @GetMapping("/paye")
     public List<Facture> getFacturesPaye() {
         return factureRepository.findByEtat(Facture.Etat.PAYEE);

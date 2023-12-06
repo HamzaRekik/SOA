@@ -9,6 +9,12 @@ import { FacturesComponent } from './components/factures/factures.component';
 import {FormsModule} from "@angular/forms";
 import { ReglementsComponent } from './components/reglements/reglements.component';
 import { AppRoutingModule } from './app-routing.module';
+import { ModalPageComponent } from './components/modal-page/modal-page.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { PaymentStripeComponent } from './components/payment-stripe/payment-stripe.component'
+
+
+
 
 @NgModule({
   declarations: [
@@ -16,13 +22,16 @@ import { AppRoutingModule } from './app-routing.module';
     NavbarComponent,
     FactureComponentComponent,
     FacturesComponent,
-    ReglementsComponent
+    ReglementsComponent,
+    ModalPageComponent,
+    PaymentStripeComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     FormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FontAwesomeModule,
   ],
   providers: [HttpClient],
   bootstrap: [AppComponent]

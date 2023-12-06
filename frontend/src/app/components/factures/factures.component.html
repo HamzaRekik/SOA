@@ -1,10 +1,10 @@
 <body class="bg-gray-100 flex justify-center items-center ">
 
 <div class="container p-5 h-screen">
-  <h1 class="text-5xl  mb-4">Factures</h1>
+  <h1 class="text-5xl  mb-4">Historique des payments</h1>
   <div class="flex space-x-4 mb-4">
     <button class="bg-gray-700 text-white py-2 px-4 rounded" (click)="allFactures()">Tous</button>
-    <button class="bg-gray-700 text-white py-2 px-4 rounded" (click)="unpaidFactures()" > Non Payé</button>
+    <button class="bg-gray-700 text-white py-2 px-4 rounded" (click)="unpaidFactures()"> Non Payé</button>
     <button class="bg-gray-700 text-white py-2 px-4 rounded" (click)="paidFactures()">Payé</button>
 
   </div>
@@ -13,7 +13,6 @@
     <table class="w-full">
       <thead class="bg-gray-50 border-b-2 border-gray-200">
       <tr>
-        <th class="w-20 p-3 text-sm font-semibold tracking-wide text-left">Select</th>
         <th class="w-20 p-3 text-sm font-semibold tracking-wide text-left">Reference</th>
         <th class="w-24 p-3 text-sm font-semibold tracking-wide text-left">Status</th>
         <th class="w-24 p-3 text-sm font-semibold tracking-wide text-left">Date</th>
@@ -23,12 +22,7 @@
       <tbody class="divide-y divide-gray-100">
       <tr class="bg-gray-50" *ngFor="let facture of factures">
         <td class="p-3 text-sm text-gray-700 whitespace-nowrap">
-          <input *ngIf="facture.etat == 'NON_PAYEE'" type="checkbox" class="form-checkbox h-4 w-4 text-blue-500"
-                 [(ngModel)]="facture.isSelected"
-                 (change)="updateSubmitButtonState()">
-        </td>
-        <td class="p-3 text-sm text-gray-700 whitespace-nowrap">
-          <a  class="font-bold text-blue-500 ">FAC_{{facture.num_facture}}</a>
+          <a class="font-bold text-blue-500 ">FAC_{{facture.num_facture}}</a>
         </td>
         <td class="p-3 text-sm text-gray-700 whitespace-nowrap">
           <span
@@ -41,10 +35,10 @@
       </tbody>
     </table>
   </div>
-  <button class="bg-gray-700 text-white mt-4 py-2 px-4 rounded disabled:opacity-50" [disabled]="!isSubmitButtonEnabled"
-          (click)="calculSomme()">
-    Soumettre
+  <button class="bg-gray-700 text-white mt-4 py-2 px-4 rounded disabled:opacity-50" (click)="openModal()">Demande de
+    paiement
   </button>
 </div>
 
+<app-modal-page *ngIf="showModal" [title]="modalTitle" (closeModal)="closeModal()"></app-modal-page>
 </body>
