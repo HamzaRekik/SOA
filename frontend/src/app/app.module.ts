@@ -11,7 +11,8 @@ import { ReglementsComponent } from './components/reglements/reglements.componen
 import { AppRoutingModule } from './app-routing.module';
 import { ModalPageComponent } from './components/modal-page/modal-page.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { PaymentStripeComponent } from './components/payment-stripe/payment-stripe.component'
+import { PaymentStripeComponent } from './components/payment-stripe/payment-stripe.component';
+import { ModalRecuComponent } from './components/modal-recu/modal-recu.component'
 
 
 
@@ -24,7 +25,8 @@ import { PaymentStripeComponent } from './components/payment-stripe/payment-stri
     FacturesComponent,
     ReglementsComponent,
     ModalPageComponent,
-    PaymentStripeComponent
+    PaymentStripeComponent,
+    ModalRecuComponent
   ],
   imports: [
     BrowserModule,

@@ -79,7 +79,7 @@
               <span class="text-gray-700">{{facture.num_facture}}</span>
               <span class="text-gray-700">{{facture.date_transaction}}</span>
               <span class="text-gray-700">${{facture.montant_total}}</span>
-              <button class="text-bold text-gray-500 hover:text-gray-700 font-bold" (click)="removeFromPay(facture)"><fa-icon [icon]="faDetail"></fa-icon></button>
+              <button class="text-bold text-gray-500 hover:text-gray-700 font-bold" (click)="openDetailsModal(facture)"><fa-icon [icon]="faDetail"></fa-icon></button>
               <button class="text-bold text-gray-500 hover:text-gray-700 font-bold" (click)="removeFromPay(facture)"><fa-icon [icon]="faMinus"></fa-icon></button>
             </div>
             <div class="flex flex-row justify-between items-center border-b p-2">
@@ -100,4 +100,7 @@
       </div>
     </div>
   </div>
+  <recu *ngIf="isModalOpen" [facture]="facture" (closeModal)="closeRecuModal()"></recu>
 </div>
+
+

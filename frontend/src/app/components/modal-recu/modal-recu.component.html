@@ -1,0 +1,60 @@
+<div class="fixed inset-0 overflow-y-auto flex items-center justify-center">
+  <!-- Overlay Background -->
+  <div class="fixed inset-0 transition-opacity">
+    <div class="absolute inset-0 bg-gray-800 opacity-75"></div>
+  </div>
+
+  <!-- Modal Container -->
+  <div class="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all max-w-md w-full">
+    <!-- Modal Header -->
+    <div class="bg-gray-700 px-6 py-4">
+      <h3 class="text-xl font-semibold text-white mb-2">Details</h3>
+    </div>
+
+    <!-- Modal Body -->
+    <div class="px-6 py-8">
+      <div class="grid grid-cols-2 gap-4">
+        <!-- Facture ID -->
+        <div class="mb-4">
+          <p class="text-gray-600 text-sm">ID:</p>
+          <p class="font-medium">{{ facture?.id }}</p>
+        </div>
+
+        <!-- Num Facture -->
+        <div class="mb-4">
+          <p class="text-gray-600 text-sm">Reference Facture:</p>
+          <p class="font-medium">{{ facture?.num_facture }}</p>
+        </div>
+
+        <!-- Montant Total -->
+        <div class="mb-4">
+          <p class="text-gray-600 text-sm">Montant Total:</p>
+          <p class="font-medium">${{ facture?.montant_total }}</p>
+        </div>
+
+        <!-- Etat -->
+        <div class="mb-4">
+          <p class="text-gray-600 text-sm">Etat:</p>
+          <p class="font-medium">{{ facture!.etat ? 'NON_PAYEE' : 'NON PAYE' }}</p>
+        </div>
+
+        <!-- Date Transaction -->
+        <div class="mb-4">
+          <p class="text-gray-600 text-sm">Date Transaction:</p>
+          <p class="font-medium">{{ facture?.date_transaction }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Footer -->
+    <div class="bg-gray-200 px-6 py-4 flex justify-end">
+      <button
+        type="button"
+        class="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-800 bg-gray-300 hover:bg-gray-400 "
+        (click)="onCloseModal()"
+      >
+        Fermer
+      </button>
+    </div>
+  </div>
+</div>

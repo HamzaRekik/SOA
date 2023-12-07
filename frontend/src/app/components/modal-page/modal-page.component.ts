@@ -15,7 +15,7 @@ export class ModalPageComponent implements OnInit{
   faClose = faClose
   faDetail = faCircleInfo
 
-  @Input() title: string | undefined;
+
   @Output() closeModal = new EventEmitter();
 
   currentDate: string;
@@ -23,6 +23,7 @@ export class ModalPageComponent implements OnInit{
   description: string | undefined;
   factures: Facture[] = [];
   facturesToPay: Facture[] = [];
+  facture: Facture | undefined
 
   montantTotal: number = 0;
 
@@ -54,6 +55,20 @@ export class ModalPageComponent implements OnInit{
     this.facturesToPay = this.facturesToPay.filter(item => item !== facture);
     this.factures.push(facture);
     this.montantTotal -= facture.montant_total ?? 0;
+  }
+
+  isModalOpen = false;
+
+  openModal() {
+
+  }
+  openDetailsModal(facture: Facture): void {
+    this.facture = facture;
+    this.isModalOpen = true;
+  }
+
+  closeRecuModal() {
+    this.isModalOpen = false;
   }
 
 

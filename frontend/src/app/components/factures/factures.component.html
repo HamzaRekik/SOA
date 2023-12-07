@@ -1,14 +1,37 @@
 <body class="bg-gray-100 flex justify-center items-center ">
 
 <div class="container p-5 h-screen">
-  <h1 class="text-5xl  mb-4">Historique des payments</h1>
-  <div class="flex space-x-4 mb-4">
-    <button class="bg-gray-700 text-white py-2 px-4 rounded" (click)="allFactures()">Tous</button>
-    <button class="bg-gray-700 text-white py-2 px-4 rounded" (click)="unpaidFactures()"> Non Payé</button>
-    <button class="bg-gray-700 text-white py-2 px-4 rounded" (click)="paidFactures()">Payé</button>
+  <div class="flex flex-col items-center pb-4">
+    <h1 class="text-5xl mb-4">Historique des paiements</h1>
 
+    <div *ngIf="unpaidFacturesNumber !==0" class="flex items-center bg-red-200 text-red-800 p-2 rounded-lg bg-opacity-50">
+    <span class="p-1.5 text-xs font-medium uppercase tracking-wider">
+      {{unpaidFacturesNumber}} factures non payées
+    </span>
+    </div>
   </div>
 
+
+  <div class="flex flex-wrap items-center mb-4 space-y-2 sm:space-x-4 sm:space-y-0">
+    <label for="startDate" class="text-gray-700">Date début:</label>
+    <input type="date" id="startDate" class="py-2 px-4 rounded border border-gray-300 focus:outline-none focus:border-blue-500" [(ngModel)]="defaultStartDate" (ngModelChange)="onDatesChange()">
+
+    <label for="endDate" class="text-gray-700">Date fin:</label>
+    <input type="date" id="endDate" class="py-2 px-4 rounded border border-gray-300 focus:outline-none focus:border-blue-500" [(ngModel)]="defaultEndDate" (ngModelChange)="onDatesChange()">
+
+    <label for="amountRange" class="text-gray-700">Montant:</label>
+    <div class=" items-center space-x-2">
+      <input type="range" id="amountRange" min="0" max="2000" step="10" class="w-56" [(ngModel)]="amountRangeValue"  (input)="updateRangeLabel()">
+      <div id="rangeLabel" class="text-gray-600"></div>
+    </div>
+
+    <label for="transactionType" class="text-gray-700">Type de transaction:</label>
+    <select id="transactionType" class="py-2 px-4 rounded border border-gray-300 focus:outline-none focus:border-blue-500" [(ngModel)]="selectedTransactionType" (ngModelChange)="onTransactionTypeChange()">
+      <option value="">Tous</option>
+      <option value="unpaid" >Carte Bancaire</option>
+      <option value="paid">En Espèce</option>
+    </select>
+  </div>
   <div class="overflow-auto rounded-lg shadow hidden md:block">
     <table class="w-full">
       <thead class="bg-gray-50 border-b-2 border-gray-200">
@@ -16,13 +39,14 @@
         <th class="w-20 p-3 text-sm font-semibold tracking-wide text-left">Reference</th>
         <th class="w-24 p-3 text-sm font-semibold tracking-wide text-left">Status</th>
         <th class="w-24 p-3 text-sm font-semibold tracking-wide text-left">Date</th>
+        <th class="w-24 p-3 text-sm font-semibold tracking-wide text-left">Methode Payment</th>
         <th class="w-32 p-3 text-sm font-semibold tracking-wide text-left">Total</th>
       </tr>
       </thead>
       <tbody class="divide-y divide-gray-100">
       <tr class="bg-gray-50" *ngFor="let facture of factures">
         <td class="p-3 text-sm text-gray-700 whitespace-nowrap">
-          <a class="font-bold text-blue-500 ">FAC_{{facture.num_facture}}</a>
+          <a class="font-bold text-blue-500 ">{{facture.num_facture}}</a>
         </td>
         <td class="p-3 text-sm text-gray-700 whitespace-nowrap">
           <span
@@ -30,6 +54,7 @@
   {{facture.etat == 'NON_PAYEE' ? 'Non Payé' : 'Payé'}} </span>
         </td>
         <td class="p-3 text-sm text-gray-700 whitespace-nowrap">{{facture.date_transaction}}</td>
+        <td class="p-3 text-sm text-gray-700 whitespace-nowrap">{{facture.methode_payment}}</td>
         <td class="p-3 text-sm text-gray-700 whitespace-nowrap">${{facture.montant_total}}</td>
       </tr>
       </tbody>
@@ -40,5 +65,5 @@
   </button>
 </div>
 
-<app-modal-page *ngIf="showModal" [title]="modalTitle" (closeModal)="closeModal()"></app-modal-page>
+<app-modal-page *ngIf="showModal"  (closeModal)="closeModal()"></app-modal-page>
 </body>

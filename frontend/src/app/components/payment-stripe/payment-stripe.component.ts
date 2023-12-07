@@ -1,6 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { StripeService } from 'ngx-stripe';
-
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-payment-stripe',
@@ -8,37 +6,38 @@ import { StripeService } from 'ngx-stripe';
   styleUrls: ['./payment-stripe.component.css']
 })
 export class PaymentStripeComponent implements OnInit {
-  @ViewChild('cardElement') cardElement: ElementRef | undefined;
-
-  constructor(private stripeService: StripeService) { }
+  constructor() { }
+  handler: any = null;
 
   ngOnInit() {
     this.loadStripe();
   }
 
   pay(amount: any) {
-    const stripe = this.stripeService.stripe as any;
-
-    const elements = stripe.elements();
-    const card = elements.create('card');
-
-    card.mount(this.cardElement!.nativeElement);
-
-    stripe.confirmCardPayment('payment_intent_client_secret', {
-      payment_method: {
-        card: card,
-      },
-    }).then((result: any) => {
-      if (result.error) {
-        console.error(result.error.message);
-      } else {
-        console.log(result.paymentIntent);
-        alert('Payment Success!!');
-      }
+    this.handler.open({
+      name: 'Payment Stripe',
+      amount: amount * 100
     });
   }
 
   loadStripe() {
-    this.stripeService.setKey('pk_test_51N1TkEDrbk7maP7MI4NuIary5VqPBXnuVg6oaVbxggM4EHUCqqQ2y0RGOCFiSgcxTHVoqtsu6x8VyOzkAikfa9CY00soOSzlO4');
+    if (!window.document.getElementById('stripe-script')) {
+      var s = window.document.createElement("script");
+      s.id = "stripe-script";
+      s.type = "text/javascript";
+      s.src = "https://checkout.stripe.com/checkout.js";
+      s.onload = () => {
+        this.handler = (<any>window).StripeCheckout.configure({
+          key: 'pk_test_51HxRkiCumzEESdU2Z1FzfCVAJyiVHyHifo0GeCMAyzHPFme6v6ahYeYbQPpD9BvXbAacO2yFQ8ETlKjo4pkHSHSh00qKzqUVK9',
+          locale: 'auto',
+          token: function (token: any) {
+            console.log(token);
+            alert('Payment Success!!');
+          }
+        });
+      }
+
+      window.document.body.appendChild(s);
+    }
   }
 }
