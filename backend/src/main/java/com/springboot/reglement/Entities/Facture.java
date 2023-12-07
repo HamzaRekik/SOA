@@ -8,6 +8,7 @@ import java.time.LocalDate;
 @Entity
 public class Facture {
 
+
     public enum Etat {
 
         NON_PAYEE,
@@ -18,9 +19,11 @@ public class Facture {
     @GeneratedValue
     private long id;
 
+    private String methodePayment;
+
     private String num_facture;
 
-    private long montant_total;
+    private long montantTotal;
 
     public Etat getEtat() {
         return etat;
@@ -32,7 +35,7 @@ public class Facture {
 
     private Etat etat ;
 
-    private LocalDate date_transaction;
+    private LocalDate dateTransaction;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
@@ -41,12 +44,23 @@ public class Facture {
     public Facture() {
     }
 
-    public Facture(long id, String num_facture, long montant_total, LocalDate date_transaction ) {
+    public Facture(long id, String methode_payment, String num_facture, long montant_total, Etat etat, LocalDate date_transaction, Reglement reglement) {
         this.id = id;
+        this.methodePayment = methode_payment;
         this.num_facture = num_facture;
-        this.montant_total = montant_total;
-        this.date_transaction = date_transaction;
-        this.etat = Etat.NON_PAYEE;
+        this.montantTotal = montant_total;
+        this.etat = etat;
+        this.dateTransaction = date_transaction;
+        this.reglement = reglement;
+    }
+
+
+    public String getMethode_payment() {
+        return methodePayment;
+    }
+
+    public void setMethode_payment(String methode_payment) {
+        this.methodePayment = methode_payment;
     }
 
     public long getId() {
@@ -66,19 +80,19 @@ public class Facture {
     }
 
     public long getMontant_total() {
-        return montant_total;
+        return montantTotal;
     }
 
     public void setMontant_total(long montant_total) {
-        this.montant_total = montant_total;
+        this.montantTotal = montant_total;
     }
 
     public LocalDate getDate_transaction() {
-        return date_transaction;
+        return dateTransaction;
     }
 
     public void setDate_transaction(LocalDate date_transaction) {
-        this.date_transaction = date_transaction;
+        this.dateTransaction = date_transaction;
     }
     public Reglement getReglement() {
         return reglement;
@@ -94,8 +108,8 @@ public class Facture {
         return "Facture{" +
                 "id=" + id +
                 ", num_facture='" + num_facture + '\'' +
-                ", montant_total=" + montant_total +
-                ", date_transaction=" + date_transaction +
+                ", montant_total=" + montantTotal +
+                ", date_transaction=" + dateTransaction +
                 '}';
     }
 }

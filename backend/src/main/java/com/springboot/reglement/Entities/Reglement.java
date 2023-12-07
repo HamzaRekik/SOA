@@ -8,12 +8,6 @@ import java.util.List;
 @Entity
 public class Reglement {
 
-    public enum Etat {
-
-        NON_REGLE, Complete,
-    }
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -22,7 +16,9 @@ public class Reglement {
 
     private Long montant;
 
-    private Etat etat ;
+    private String etat ;
+
+    private String methode_payment;
 
     private LocalDate date_paiement;
 
@@ -33,12 +29,29 @@ public class Reglement {
     public Reglement() {
     }
 
-    public Reglement(Long id, String num_reglement, Long montant, Etat etat, LocalDate date_paiement) {
+
+    public Reglement(long id, String num_reglement, Long montant, String etat, String methode_payment, LocalDate date_paiement, List<Facture> factures) {
         this.id = id;
         this.num_reglement = num_reglement;
         this.montant = montant;
         this.etat = etat;
+        this.methode_payment = methode_payment;
         this.date_paiement = date_paiement;
+        this.factures = factures;
+    }
+
+
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getMethode_payment() {
+        return methode_payment;
+    }
+
+    public void setMethode_payment(String methode_payment) {
+        this.methode_payment = methode_payment;
     }
 
     public Long getId() {
@@ -65,11 +78,11 @@ public class Reglement {
         this.montant = montant;
     }
 
-    public Etat getEtat() {
+    public String getEtat() {
         return etat;
     }
 
-    public void setEtat(Etat etat) {
+    public void setEtat(String etat) {
         this.etat = etat;
     }
 

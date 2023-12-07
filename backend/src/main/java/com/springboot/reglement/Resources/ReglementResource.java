@@ -56,25 +56,43 @@ public class ReglementResource {
         return factureRepository.findByEtat(Facture.Etat.PAYEE);
     }
 
+    @GetMapping("/factures_paye_by_methode_payment/{methode_payment}")
+    public List<Facture> getFacturesByMethodPayment(@PathVariable String methode_payment) {
+        return factureRepository.findByEtatAndMethodePayment(Facture.Etat.PAYEE, methode_payment);
+    }
+
+    @GetMapping("/montant/{min}/{max}")
+    public List<Facture> getFacturesByMontant(@PathVariable double min, @PathVariable double max) {
+        return factureRepository.findByMontantTotalBetweenAndEtat(min, max, Facture.Etat.PAYEE);
+    }
+
+    @GetMapping("/date/{start}/{end}")
+    public List<Facture> getFacturesByDate(@PathVariable LocalDate start, @PathVariable LocalDate end) {
+        return factureRepository.findByDateTransactionBetweenAndEtat(start, end, Facture.Etat.PAYEE);
+    }
+
     public Reglement createReglement() {
         Reglement reglement = new Reglement();
         reglement.setNum_reglement(generateRandomString());
-        reglement.setEtat(Reglement.Etat.Complete);
+        reglement.setEtat("Payé");
         reglement.setDate_paiement(LocalDate.now());
         return reglementRepository.save(reglement);
     }
 
-    @PostMapping ("/set_factures")
-    public void setFactures(@RequestBody List<Facture> factures){
+    @PostMapping("/set_factures")
+    public void setFactures(@RequestBody List<Facture> factures) {
         long somme = 0L;
+        String paymentMethod = "";
         Reglement reglement = createReglement();
-        for(Facture facture : factures){
+        for (Facture facture : factures) {
             facture.setEtat(Facture.Etat.PAYEE);
             facture.setReglement(reglement);
+            paymentMethod = facture.getMethode_payment();
             somme += facture.getMontant_total();
             factureRepository.save(facture);
         }
         reglement.setMontant(somme);
+        reglement.setMethode_payment(paymentMethod);
         reglementRepository.save(reglement);
     }
 
