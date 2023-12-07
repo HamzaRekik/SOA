@@ -1,5 +1,4 @@
 <div class="fixed inset-0 overflow-y-auto flex items-center justify-center">
-  <!-- Overlay Background -->
   <div class="fixed inset-0 transition-opacity">
     <div class="absolute inset-0 bg-gray-800 opacity-75"></div>
   </div>
@@ -37,14 +36,9 @@
           <p class="text-gray-600 text-sm">Etat:</p>
           <p class="font-medium">{{ facture!.etat ? 'NON_PAYEE' : 'NON PAYE' }}</p>
         </div>
-
-        <!-- Date Transaction -->
-        <div class="mb-4">
-          <p class="text-gray-600 text-sm">Date Transaction:</p>
-          <p class="font-medium">{{ facture?.date_transaction }}</p>
-        </div>
       </div>
     </div>
+
 
     <!-- Modal Footer -->
     <div class="bg-gray-200 px-6 py-4 flex justify-end">

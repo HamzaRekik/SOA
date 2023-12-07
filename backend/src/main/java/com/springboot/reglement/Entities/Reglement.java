@@ -18,9 +18,9 @@ public class Reglement {
 
     private String etat ;
 
-    private String methode_payment;
+    private String methodePayment;
 
-    private LocalDate date_paiement;
+    private LocalDate datePaiement;
 
     @OneToMany(mappedBy = "reglement", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Facture> factures;
@@ -35,8 +35,8 @@ public class Reglement {
         this.num_reglement = num_reglement;
         this.montant = montant;
         this.etat = etat;
-        this.methode_payment = methode_payment;
-        this.date_paiement = date_paiement;
+        this.methodePayment = methode_payment;
+        this.datePaiement = date_paiement;
         this.factures = factures;
     }
 
@@ -47,11 +47,11 @@ public class Reglement {
     }
 
     public String getMethode_payment() {
-        return methode_payment;
+        return methodePayment;
     }
 
     public void setMethode_payment(String methode_payment) {
-        this.methode_payment = methode_payment;
+        this.methodePayment = methode_payment;
     }
 
     public Long getId() {
@@ -87,11 +87,11 @@ public class Reglement {
     }
 
     public LocalDate getDate_paiement() {
-        return date_paiement;
+        return datePaiement;
     }
 
     public void setDate_paiement(LocalDate date_paiement) {
-        this.date_paiement = date_paiement;
+        this.datePaiement = date_paiement;
     }
 
     public List<Facture> getFactures() {
@@ -109,7 +109,7 @@ public class Reglement {
                 ", num_reglement='" + num_reglement + '\'' +
                 ", montant=" + montant +
                 ", etat=" + etat +
-                ", date_paiement=" + date_paiement +
+                ", date_paiement=" + datePaiement +
                 '}';
     }
 }

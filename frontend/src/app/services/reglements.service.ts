@@ -16,4 +16,19 @@ export class ReglementsService {
     return this.http.get<Array<Reglement>>(reglementsUrl)
   }
 
+  getPaidFacturesWithPaymentMethod(paymentMethod: String) {
+    const paidFacturesUrl = this.baseUrl + `/reglements_by_methode_payment/${paymentMethod}`;
+    return this.http.get<Array<Reglement>>(paidFacturesUrl)
+  }
+
+  getPaidFacturesWithRangeAmount(max: number) {
+    const paidFacturesUrl = this.baseUrl + `/montantReglement/0/${max}`;
+    return this.http.get<Array<Reglement>>(paidFacturesUrl)
+  }
+
+  getPaidFacturesWithRangeDate(start: string, end: string) {
+    const paidFacturesUrl = this.baseUrl + `/dateReglement/${start}/${end}`;
+    return this.http.get<Array<Reglement>>(paidFacturesUrl)
+  }
+
 }

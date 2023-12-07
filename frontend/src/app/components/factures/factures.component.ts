@@ -1,6 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {Facture} from "../../services/models/facture";
 import {FacturesService} from "../../services/factures.service";
+import { ReglementsService } from 'src/app/services/reglements.service';
+import { Reglement } from 'src/app/services/models/reglement';
+import jsPDF from 'jspdf';
+
 
 @Component({
     selector: 'factures',
@@ -8,100 +11,119 @@ import {FacturesService} from "../../services/factures.service";
     styleUrls: ['./factures.component.css']
 })
 export class FacturesComponent implements OnInit {
-
-    isSubmitButtonEnabled = false;
-    factures: Facture[] = [];
-    factToRegl: Facture[] = [];
+    //variables
+    reglements: Reglement[] = [];
     defaultStartDate: any;
     defaultEndDate: any;
     unpaidFacturesNumber: number = 0
+    amountRangeValue: any;
+    selectedTransactionType = 'tous'
+    showModal = false;
 
-    constructor(private service: FacturesService) {
-    }
+
+    constructor(private service: FacturesService , private serviceRegl : ReglementsService  ) {}
 
     ngOnInit(): void {
         this.paidFactures()
         this.unPaidFacturesNumber()
     }
 
+    generatePDF(reglement: Reglement) {
+        const doc = new jsPDF();
+
+        // Add header
+        doc.setFontSize(18);
+        doc.text('Invoice', 70, 10);
+
+        // Add invoice details
+        doc.setFontSize(12);
+        doc.text('Invoice Number:', 10, 20);
+        doc.text('Date:', 10, 30);
+        doc.text('Customer:', 10, 40);
+
+        // Add dynamic data
+        doc.setFont('helvetica', 'normal');
+        doc.text(`RGL_${reglement.num_reglement} - ${reglement.etat}`, 50, 20);
+        doc.text(`${reglement.date_paiement}`, 50, 30);
+        // Assuming there is a customer field in Reglement, replace 'John Doe' with the actual property
+
+
+        // Add table header
+        const headers = ['Description', 'Quantity', 'Unit Price', 'Total'];
+
+        // Set initial y-position for the table
+        let yPos = 60;
+
+        // Draw table headers
+        headers.forEach((header, index) => {
+            doc.text(header, 10 + index * 40, yPos);
+        });
+
+        // Draw table row for the provided Reglement
+        yPos += 10;
+        const row = [
+            `RGL_${reglement.num_reglement} - ${reglement.etat}`,
+            '1', // Assuming quantity is always 1
+            `$${reglement.montant}`, // Assuming montant is the unit price
+            `$${reglement.montant}` // Assuming montant is the total
+        ];
+
+        row.forEach((item, colIndex) => {
+            doc.text(item, 10 + colIndex * 40, yPos);
+        });
+
+        // Add total
+        const total = reglement.montant;
+        yPos += 10;
+        doc.text(`Total: $${total}`, 150, yPos);
+
+        // Add footer
+        doc.setFontSize(10);
+        doc.text('Thank you for your business!', 70, yPos + 10);
+
+        const pdfOutput = doc.output();  // No need to specify 'dataurl'
+        window.open(URL.createObjectURL(new Blob([pdfOutput], { type: 'application/pdf' })), '_blank');
+    }
+
+
     onDatesChange() {
         this.getFacturesByDateRange(this.defaultStartDate , this.defaultEndDate)
     }
-    calculSomme() {
-        for (let i = 0; i < this.factures.length; i++) {
-            if (this.factures[i].isSelected)
-                this.factToRegl.push(this.factures[i])
-        }
-        console.log(this.factToRegl)
-        this.saveReglement()
-        this.factToRegl = []
-    }
+    getFacturesByDateRange(start: string, end: string) {
+        this.serviceRegl.getPaidFacturesWithRangeDate(start, end).subscribe({
+            next: (value: Array<Reglement>) => {
+                this.reglements = value
+            },
+            error: (error) => {
+                console.error("Error getting factures : ", error);
+            }
+        });
 
-    updateSubmitButtonState() {
-        this.isSubmitButtonEnabled = this.factures.some(facture => facture.isSelected);
+    }// filtrage par date
+
+
+    onTransactionTypeChange() {
+        if (this.selectedTransactionType === 'unpaid') {
+            this.getFacturesByPaymentMethod('Carte Bancaire');
+        } else if (this.selectedTransactionType === 'paid') {
+            this.getFacturesByPaymentMethod('En Espece');
+        } else {
+            this.paidFactures()
+        }
     }
 
     getFacturesByPaymentMethod(paymentMethod: String) {
-        this.service.getPaidFacturesWithPaymentMethod(paymentMethod).subscribe({
-            next: (value: Array<Facture>) => {
-                this.factures = value
+        this.serviceRegl.getPaidFacturesWithPaymentMethod(paymentMethod).subscribe({
+            next: (value: Array<Reglement>) => {
+                this.reglements = value
             },
             error: (error) => {
-                console.error("Error making reglement:", error);
+                console.error("Error getting factures:", error);
             }
         });
 
-    }
+    }//filtrage par methode de payment
 
-    getFacturesByAmountRange(max: number) {
-        this.service.getPaidFacturesWithRangeAmount(max).subscribe({
-            next: (value: Array<Facture>) => {
-                this.factures = value
-            },
-            error: (error) => {
-                console.error("Error making reglement:", error);
-            }
-        });
-
-    }
-
-    getFacturesByDateRange(start: string, end: string) {
-        this.service.getPaidFacturesWithRangeDate(start, end).subscribe({
-            next: (value: Array<Facture>) => {
-                this.factures = value
-            },
-            error: (error) => {
-                console.error("Error making reglement:", error);
-            }
-        });
-
-    }
-
-
-    saveReglement(): void {
-        this.service.makeReglement(this.factToRegl).subscribe({
-            next: (value: Array<Facture>) => {
-                this.updateSubmitButtonState();
-                this.ngOnInit();
-            },
-            error: (error) => {
-                console.error("Error making reglement:", error);
-            }
-        });
-    }
-
-    unPaidFacturesNumber() {
-        this.service.getNumberOfUnpaidFactures().subscribe({
-            next: value => {
-                this.unpaidFacturesNumber = value
-            },
-            error: (error) => {
-                console.error("Error making reglement:", error);
-            }
-        });
-    }
-
-    amountRangeValue: any;
 
     updateRangeLabel() {
         const amountRange = document.getElementById('amountRange') as HTMLInputElement;
@@ -113,58 +135,56 @@ export class FacturesComponent implements OnInit {
             this.getFacturesByAmountRange(maxAmount)
         }
     }
+    getFacturesByAmountRange(max: number) {
+        this.serviceRegl.getPaidFacturesWithRangeAmount(max).subscribe({
+            next: (value: Array<Reglement>) => {
+                this.reglements = value
+            },
+            error: (error) => {
+                console.error("Error getting factures:", error);
+            }
+        });
+
+    }// filtrage par intervale de prix
+
+
+
+
+
+
+    unPaidFacturesNumber() {
+        this.service.getNumberOfUnpaidFactures().subscribe({
+            next: value => {
+                this.unpaidFacturesNumber = value
+            },
+            error: (error) => {
+                console.error("Error making reglement:", error);
+            }
+        });
+    }//nombre des factures non payé
+
 
     paidFactures() {
-        this.service.getPaidFactures().subscribe({
+        this.serviceRegl.getAllReglements().subscribe({
             next: value => {
-                this.factures = value
+                this.reglements = value
             }
         })
-    }
+    }// factures payé
 
-    unpaidFactures() {
-        this.service.getUnpaidFactures().subscribe({
-            next: value => {
-                this.factures = value
-            }
-        })
-    }
 
-    allFactures() {
-        this.service.getAllFactures().subscribe({
-            next: value => {
-                this.factures = value
-            }
-        })
-    }
-
-    showModal = false;
 
 
     openModal() {
         this.showModal = true;
-    }
-
+    }//page modale de demande de payment
     closeModal() {
         this.showModal = false;
-        // Do something when modal is closed
-        console.log('Modal closed');
-    }
+        this.ngOnInit()
+    }//page modale de demande de payment
 
 
-    selectedTransactionType: string = '';
 
-
-    onTransactionTypeChange() {
-
-        if (this.selectedTransactionType === 'unpaid') {
-            this.getFacturesByPaymentMethod('Carte Bancaire');
-        } else if (this.selectedTransactionType === 'paid') {
-            this.getFacturesByPaymentMethod('En Espece');
-        } else {
-            this.paidFactures()
-        }
-    }
 
 
 }

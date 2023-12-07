@@ -21,19 +21,19 @@
 
     <label for="amountRange" class="text-gray-700">Montant:</label>
     <div class=" items-center space-x-2">
-      <input type="range" id="amountRange" min="0" max="2000" step="10" class="w-56" [(ngModel)]="amountRangeValue"  (input)="updateRangeLabel()">
+      <input type="range" id="amountRange" min="0" max="3000" step="10" class="w-56" [(ngModel)]="amountRangeValue"  (input)="updateRangeLabel()">
       <div id="rangeLabel" class="text-gray-600"></div>
     </div>
 
     <label for="transactionType" class="text-gray-700">Type de transaction:</label>
-    <select id="transactionType" class="py-2 px-4 rounded border border-gray-300 focus:outline-none focus:border-blue-500" [(ngModel)]="selectedTransactionType" (ngModelChange)="onTransactionTypeChange()">
-      <option value="">Tous</option>
+    <select id="transactionType"  class="py-2 px-4 rounded border border-gray-300 focus:outline-none focus:border-blue-500" [(ngModel)]="selectedTransactionType" (ngModelChange)="onTransactionTypeChange()">
+      <option value="tous">Tous</option>
       <option value="unpaid" >Carte Bancaire</option>
       <option value="paid">En Espèce</option>
     </select>
   </div>
   <div class="overflow-auto rounded-lg shadow hidden md:block">
-    <table class="w-full">
+    <table class="w-full" *ngIf="reglements.length !== 0">
       <thead class="bg-gray-50 border-b-2 border-gray-200">
       <tr>
         <th class="w-20 p-3 text-sm font-semibold tracking-wide text-left">Reference</th>
@@ -41,24 +41,38 @@
         <th class="w-24 p-3 text-sm font-semibold tracking-wide text-left">Date</th>
         <th class="w-24 p-3 text-sm font-semibold tracking-wide text-left">Methode Payment</th>
         <th class="w-32 p-3 text-sm font-semibold tracking-wide text-left">Total</th>
+          <th class="w-32 p-3 text-sm font-semibold tracking-wide text-left"></th>
+
       </tr>
       </thead>
-      <tbody class="divide-y divide-gray-100">
-      <tr class="bg-gray-50" *ngFor="let facture of factures">
-        <td class="p-3 text-sm text-gray-700 whitespace-nowrap">
-          <a class="font-bold text-blue-500 ">{{facture.num_facture}}</a>
-        </td>
-        <td class="p-3 text-sm text-gray-700 whitespace-nowrap">
-          <span
-            class="p-1.5 text-xs font-medium uppercase tracking-wider {{facture.etat == 'NON_PAYEE' ? 'text-red-800 bg-red-200' : 'text-green-800 bg-green-200' }} rounded-lg bg-opacity-50">
-  {{facture.etat == 'NON_PAYEE' ? 'Non Payé' : 'Payé'}} </span>
-        </td>
-        <td class="p-3 text-sm text-gray-700 whitespace-nowrap">{{facture.date_transaction}}</td>
-        <td class="p-3 text-sm text-gray-700 whitespace-nowrap">{{facture.methode_payment}}</td>
-        <td class="p-3 text-sm text-gray-700 whitespace-nowrap">${{facture.montant_total}}</td>
-      </tr>
+      <tbody  class="divide-y divide-gray-100">
+      <ng-container *ngFor="let reglement of reglements">
+          <tr class="bg-gray-50">
+              <td class="p-3 text-sm text-gray-700 whitespace-nowrap">
+                  <a class="font-bold text-blue-500">RGL_{{reglement.num_reglement}}</a>
+              </td>
+              <td class="p-3 text-sm text-gray-700 whitespace-nowrap">
+                <span
+                        class="p-1.5 text-xs font-medium uppercase tracking-wider text-green-800 bg-green-200 rounded-lg bg-opacity-50">
+                  {{reglement.etat}}
+                </span>
+              </td>
+              <td class="p-3 text-sm text-gray-700 whitespace-nowrap">{{reglement.date_paiement}}</td>
+              <td class="p-3 text-sm text-gray-700 whitespace-nowrap">{{reglement.methode_payment}}</td>
+              <td class="p-3 text-sm text-gray-700 whitespace-nowrap">${{reglement.montant}}</td>
+              <a href="" (click)="generatePDF(reglement)"> <td class="p-3 text-sm text-gray-700 hover:text-blue-500 whitespace-nowrap">Imprimer</td></a>
+          </tr>
+          <tr *ngFor="let facture of reglement.factures" class="bg-gray-100">
+              <td class="p-3 text-sm text-gray-700 whitespace-nowrap" colspan="4">
+                  Facture: <a class="font-bold  text-gray-700">{{facture.num_facture}}</a> - Montant: ${{facture.montant_total}}
+              </td>
+          </tr>
+      </ng-container>
       </tbody>
     </table>
+  </div>
+  <div *ngIf="reglements.length === 0" class="flex justify-center items-center h-48">
+    <p class="text-gray-700 text-xl">Historique est vide</p>
   </div>
   <button class="bg-gray-700 text-white mt-4 py-2 px-4 rounded disabled:opacity-50" (click)="openModal()">Demande de
     paiement

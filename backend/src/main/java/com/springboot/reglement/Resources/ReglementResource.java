@@ -97,6 +97,23 @@ public class ReglementResource {
     }
 
 
+    @GetMapping("/dateReglement/{start}/{end}")
+    public List<Reglement> getReglementsByDate(@PathVariable LocalDate start, @PathVariable LocalDate end) {
+        return reglementRepository.findByDatePaiementBetween(start, end);
+    }
+
+    @GetMapping("/montantReglement/{min}/{max}")
+    public List<Reglement> getReglementsByMontant(@PathVariable double min, @PathVariable double max) {
+        return reglementRepository.findByMontantBetween(min, max);
+    }
+
+    @GetMapping("/reglements_by_methode_payment/{methode_payment}")
+    public List<Reglement> getReglementsByMethodPayment(@PathVariable String methode_payment) {
+        return reglementRepository.findByMethodePayment(methode_payment);
+    }
+
+
+
     public static String generateRandomString() {
         final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         SecureRandom random = new SecureRandom();

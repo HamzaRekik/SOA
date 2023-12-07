@@ -5,6 +5,7 @@ export interface Reglement{
   num_reglement? : string ,
   montant?: number,
   etat? : string,
+  methode_payment? : string,
   date_paiement? : string,
   factures? : Array<Facture>
 }
