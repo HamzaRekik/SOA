@@ -13,6 +13,8 @@ import {ModalRecuComponent} from './components/modal-recu/modal-recu.component';
 import {CommonModule} from '@angular/common';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ToastrModule} from 'ngx-toastr';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
 
 
 @NgModule({
@@ -23,6 +25,8 @@ import {ToastrModule} from 'ngx-toastr';
         ReglementsComponent,
         ModalPageComponent,
         ModalRecuComponent,
+        LoginComponent,
+        RegisterComponent,
     ],
     imports: [
         CommonModule,

@@ -184,7 +184,7 @@ export class FacturesComponent implements OnInit {
     }//page modale de demande de payment
 
 
-
-
-
+    logout() {
+        localStorage.removeItem('user_id')
+    }
 }

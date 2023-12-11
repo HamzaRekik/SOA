@@ -8,7 +8,7 @@ import {Observable} from 'rxjs';
 })
 export class FacturesService {
     private baseUrl = "http://localhost:8080";
-
+    private  userId = localStorage.getItem('user_id')
     constructor(private http: HttpClient) {
     }
 
@@ -23,32 +23,32 @@ export class FacturesService {
     }
 
     getPaidFacturesWithPaymentMethod(paymentMethod: String) {
-        const paidFacturesUrl = this.baseUrl + `/factures_paye_by_methode_payment/${paymentMethod}`;
+        const paidFacturesUrl = this.baseUrl + `/factures_paye_by_methode_payment/${this.userId}/${paymentMethod}`;
         return this.http.get<Array<Facture>>(paidFacturesUrl)
     }
 
     getPaidFacturesWithRangeAmount(max: number) {
-        const paidFacturesUrl = this.baseUrl + `/montant/0/${max}`;
+        const paidFacturesUrl = this.baseUrl + `/montant/${this.userId}/0/${max}`;
         return this.http.get<Array<Facture>>(paidFacturesUrl)
     }
 
     getPaidFacturesWithRangeDate(start: string, end: string) {
-        const paidFacturesUrl = this.baseUrl + `/date/${start}/${end}`;
+        const paidFacturesUrl = this.baseUrl + `/date/${this.userId}/${start}/${end}`;
         return this.http.get<Array<Facture>>(paidFacturesUrl)
     }
 
     getUnpaidFactures() {
-        const paidFacturesUrl = this.baseUrl + "/non_paye";
+        const paidFacturesUrl = this.baseUrl + `/non_paye/${this.userId}`;
         return this.http.get<Array<Facture>>(paidFacturesUrl)
     }
 
     getNumberOfUnpaidFactures() {
-        const paidFacturesUrl = this.baseUrl + "/count_facture_non_paye";
+        const paidFacturesUrl = this.baseUrl + `/count_facture_non_paye/${this.userId}`;
         return this.http.get<number>(paidFacturesUrl)
     }
 
     makeReglement(factures: Array<Facture>): Observable<Array<Facture>> {
-        const endpoint = this.baseUrl + "/set_factures";
+        const endpoint = this.baseUrl +`/${this.userId}/payer_factures`;
         return this.http.post<Array<Facture>>(endpoint, factures);
     }
 }

@@ -1,4 +1,5 @@
 import { Facture } from "./facture";
+import { User } from "./user";
 
 export interface Reglement{
   id? : number ,
@@ -7,5 +8,6 @@ export interface Reglement{
   etat? : string,
   methode_payment? : string,
   date_paiement? : string,
-  factures? : Array<Facture>
+  factures? : Array<Facture>,
+  user : User
 }

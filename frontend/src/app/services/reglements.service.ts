@@ -8,26 +8,27 @@ import { Reglement } from './models/reglement';
 })
 export class ReglementsService {
   private baseUrl = "http://localhost:8080";
+  private  userId = localStorage.getItem('user_id')
 
   constructor(private http:HttpClient) {}
 
   getAllReglements(){
-    const reglementsUrl = this.baseUrl+"/reglements";
+    const reglementsUrl = this.baseUrl+`/all_reglements`;
     return this.http.get<Array<Reglement>>(reglementsUrl)
   }
 
   getPaidFacturesWithPaymentMethod(paymentMethod: String) {
-    const paidFacturesUrl = this.baseUrl + `/reglements_by_methode_payment/${paymentMethod}`;
+    const paidFacturesUrl = this.baseUrl + `/reglements_by_methode_payment/${this.userId}/${paymentMethod}`;
     return this.http.get<Array<Reglement>>(paidFacturesUrl)
   }
 
   getPaidFacturesWithRangeAmount(max: number) {
-    const paidFacturesUrl = this.baseUrl + `/montantReglement/0/${max}`;
+    const paidFacturesUrl = this.baseUrl + `/montantReglement/${this.userId}/0/${max}`;
     return this.http.get<Array<Reglement>>(paidFacturesUrl)
   }
 
   getPaidFacturesWithRangeDate(start: string, end: string) {
-    const paidFacturesUrl = this.baseUrl + `/dateReglement/${start}/${end}`;
+    const paidFacturesUrl = this.baseUrl + `/dateReglement/${this.userId}/${start}/${end}`;
     return this.http.get<Array<Reglement>>(paidFacturesUrl)
   }
 
