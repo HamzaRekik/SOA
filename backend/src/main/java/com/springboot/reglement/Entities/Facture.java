@@ -25,26 +25,22 @@ public class Facture {
 
     private long montantTotal;
 
-    public Etat getEtat() {
-        return etat;
-    }
 
-    public void setEtat(Etat etat) {
-        this.etat = etat;
-    }
-
-    private Etat etat ;
+    private Etat etat;
 
     private LocalDate dateTransaction;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JsonIgnore
     private Reglement reglement;
+
+    @ManyToOne()
+    private User user;
 
     public Facture() {
     }
 
-    public Facture(long id, String methode_payment, String num_facture, long montant_total, Etat etat, LocalDate date_transaction, Reglement reglement) {
+    public Facture(long id, String methode_payment, String num_facture, long montant_total, Etat etat, LocalDate date_transaction, Reglement reglement ,User user) {
         this.id = id;
         this.methodePayment = methode_payment;
         this.num_facture = num_facture;
@@ -52,8 +48,24 @@ public class Facture {
         this.etat = etat;
         this.dateTransaction = date_transaction;
         this.reglement = reglement;
+        this.user=user;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Etat getEtat() {
+        return etat;
+    }
+
+    public void setEtat(Etat etat) {
+        this.etat = etat;
+    }
 
     public String getMethode_payment() {
         return methodePayment;
@@ -94,6 +106,7 @@ public class Facture {
     public void setDate_transaction(LocalDate date_transaction) {
         this.dateTransaction = date_transaction;
     }
+
     public Reglement getReglement() {
         return reglement;
     }

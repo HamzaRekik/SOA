@@ -1,6 +1,7 @@
 package com.springboot.reglement.Entities;
 import jakarta.persistence.*;
 
+import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -26,21 +27,32 @@ public class Reglement {
     private List<Facture> factures;
 
 
+    @ManyToOne()
+    private User user;
+
+
     public Reglement() {
     }
 
 
-    public Reglement(long id, String num_reglement, Long montant, String etat, String methode_payment, LocalDate date_paiement, List<Facture> factures) {
+    public Reglement(long id, String num_reglement, Long montant, String etat, String methode_payment, LocalDate date_paiement , User user) {
         this.id = id;
         this.num_reglement = num_reglement;
         this.montant = montant;
         this.etat = etat;
         this.methodePayment = methode_payment;
         this.datePaiement = date_paiement;
-        this.factures = factures;
+        this.user = user;
+
     }
 
+    public User getUser() {
+        return user;
+    }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public void setId(long id) {
         this.id = id;
@@ -111,5 +123,18 @@ public class Reglement {
                 ", etat=" + etat +
                 ", date_paiement=" + datePaiement +
                 '}';
+    }
+    public static String generateRandomString() {
+        final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        SecureRandom random = new SecureRandom();
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < 8; i++) {
+            int randomIndex = random.nextInt(CHARACTERS.length());
+            char randomChar = CHARACTERS.charAt(randomIndex);
+            sb.append(randomChar);
+        }
+
+        return sb.toString();
     }
 }
