@@ -9,5 +9,5 @@ export interface Reglement{
   methode_payment? : string,
   date_paiement? : string,
   factures? : Array<Facture>,
-  user : User
+  user? : User
 }
